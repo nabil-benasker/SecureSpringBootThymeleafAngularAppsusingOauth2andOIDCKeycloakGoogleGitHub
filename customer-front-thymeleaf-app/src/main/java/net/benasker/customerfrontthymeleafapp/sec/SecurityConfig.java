@@ -33,6 +33,8 @@ public class SecurityConfig {
                 csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(ar -> ar.requestMatchers("/","/oauth2Login/**", "/webjars/**", "/h2-console/**").permitAll())
                 .authorizeHttpRequests(ar -> ar.anyRequest().authenticated())
+                .headers(h->h.frameOptions(fo->fo.disable()))
+                .csrf(csrf->csrf.ignoringRequestMatchers("/h2-console/**"))
                // .oauth2Login(Customizer.withDefaults())
                 .oauth2Login(al->al
                         .loginPage("/oauth2Login")
@@ -43,7 +45,10 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/").permitAll()
                                 .clearAuthentication(true)
                                 .deleteCookies("JSESSIONID"))
-                .exceptionHandling(eh -> eh.accessDeniedPage("/notAuthorized"))
+               // .exceptionHandling(eh -> eh.accessDeniedPage("/notAuthorized"))
+                .exceptionHandling(eh->eh.accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.sendRedirect("/notAuthorized");
+                }))
                 .build();
     }
 

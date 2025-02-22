@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="template">
 <head>
@@ -11,12 +11,26 @@
 <div layout:fragment="content">
     <div class="ps-3">
         <div class="card-body">
-            <h2>Products</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>PRICE</th>
+                    <th>QUANTITY</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product:${products}">
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.quantity}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
-
 </div>
-
 </body>
 </html>
